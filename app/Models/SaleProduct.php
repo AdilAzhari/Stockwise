@@ -35,4 +35,25 @@ class SaleProduct extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function (SaleProduct $saleProduct) {
+            $saleProduct->product->decrement('stock', $saleProduct->quantity);
+        });
+
+        static::deleting(function ($sale) {
+            if ($sale->isForceDeleting()) {
+                $sale->saleProducts()->forceDelete();
+            } else {
+                $sale->saleProducts()->delete();
+            }
+        });
+
+//        static::restoring(function ($sale) {
+//            $sale->saleProducts()->withTrashed()->restore();
+//        });
+    }
 }

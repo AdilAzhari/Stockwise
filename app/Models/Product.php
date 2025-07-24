@@ -32,18 +32,23 @@ class Product extends Model
         'is_active' => 'boolean',
     ];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function stockEntries()
+    public function stockEntries(): HasMany
     {
         return $this->hasMany(StockEntry::class);
     }
 
-    public function saleProducts()
+    public function saleProducts(): HasMany
     {
         return $this->hasMany(SaleProduct::class);
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
     }
 }

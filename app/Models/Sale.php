@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\SaleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sale extends Model
 {
-    /** @use HasFactory<\Database\Factories\SaleFactory> */
+    /** @use HasFactory<SaleFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -43,4 +44,22 @@ class Sale extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (auth()->check()) {
+                $model->user_id = auth()->id();
+            }
+        });
+
+        static::updating(function ($model) {
+            if (auth()->check()) {
+                $model->user_id = auth()->id();
+            }
+        });
+    }
+
 }

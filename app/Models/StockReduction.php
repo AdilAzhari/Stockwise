@@ -18,13 +18,27 @@ class StockReduction extends Model
         'quantity',
         'reason',
         'note',
+        'user_id'
     ];
-    public function added_by(): BelongsTo
+
+    public function addedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'added_by');
+        return $this->belongsTo(User::class);
     }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    static function boot(): void
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->user_id = auth()->id();
+        });
+        static::updating(function ($model) {
+            $model->user_id = auth()->id();
+        });
     }
 }
