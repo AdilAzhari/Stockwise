@@ -27,6 +27,7 @@ class ProductFactory extends Factory
             'cost_price' => fake()->randomFloat(2, 1, 50),
             'unit_price' => fake()->randomFloat(2, 10, 100),
             'unit' => fake()->randomElement(['piece', 'kg', 'pack']),
+            'alert_quantity' => fake()->numberBetween(5, 20),
             'image_path' => null,
             'barcode' => fake()->ean13(),
             'buying_price' => fake()->randomFloat(2, 1, 50),
@@ -35,5 +36,4 @@ class ProductFactory extends Factory
             'is_active' => true,
         ];
     }
-
 }

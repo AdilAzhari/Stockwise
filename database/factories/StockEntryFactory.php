@@ -20,9 +20,10 @@ class StockEntryFactory extends Factory
         return [
             'product_id' => Product::factory(),
             'quantity' => fake()->numberBetween(10, 100),
+            'cost_price' => fake()->randomFloat(2, 5, 50),
+            'added_by' => \App\Models\User::factory(),
             'received_at' => now(),
             'expiry_date' => now()->addDays(rand(30, 365)),
-            'user_id' => 1,
         ];
     }
 }

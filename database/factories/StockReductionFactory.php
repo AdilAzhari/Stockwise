@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use App\Models\StockReduction;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +24,7 @@ class StockReductionFactory extends Factory
             'quantity' => fake()->numberBetween(1, 20),
             'reason' => fake()->randomElement(['damage', 'transfer', 'adjustment']),
             'note' => fake()->sentence(),
-            'user_id' => 1,
+            'user_id' => User::factory(),
         ];
     }
 }
