@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use App\Observers\CategoryObserver;
 use Database\Factories\CategoryFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
+#[ObservedBy(CategoryObserver::class)]
 class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
-    use HasFactory;
-//    , SoftDeletes;
+    use HasFactory, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -21,25 +24,27 @@ class Category extends Model
         'description',
     ];
 
+    /**
+     * Get the products for the category.
+     *
+     * @return HasMany<Product, Category>
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
-    static function boot(): void
+    /**
+     * Get the activity log options for the model.
+     *
+     * @return LogOptions
+     */
+    public function getActivitylogOptions(): LogOptions
     {
-        parent::boot();
-
-        static::creating(function ($Category) {
-            if (Auth::check()) {
-                $Category->slug = str()->slug($Category->name);
-            }
-        });
-
-        static::updating(function ($Category) {
-            if (Auth::check()) {
-                $Category->slug = str()->slug($Category->name);
-            }
-        });
+        return LogOptions::defaults()
+            ->useLogName('category')
+            ->logFillable()
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn (string $eventName) => "Product was $eventName"); // Changed 'Category' to 'Product' for consistency
     }
 }
