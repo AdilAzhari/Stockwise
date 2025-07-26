@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
             $table->decimal('cost_price', 10, 2);
             $table->foreignId('added_by')->nullable()->constrained('users');
+            $table->string('reference_number')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

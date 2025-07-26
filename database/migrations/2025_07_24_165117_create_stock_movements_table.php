@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('stock_reductions', function (Blueprint $table) {
+        Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity');
-            $table->enum('reason', ['damage', 'transfer', 'adjustment']);
-            $table->text('note')->nullable();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->enum('type', ['in', 'out']);
+            $table->string('reason')->nullable(); // sale, return, manual_adjustment, etc.
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stock_reductions');
+        Schema::dropIfExists('stock_movements');
     }
 };

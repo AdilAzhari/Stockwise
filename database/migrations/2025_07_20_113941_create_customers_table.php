@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone')->nullable();
+            $table->string('phone', 25)->nullable();
             $table->string('email')->nullable();
             $table->text('address')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

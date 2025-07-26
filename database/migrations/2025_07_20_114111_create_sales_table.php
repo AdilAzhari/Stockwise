@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('total_amount', 10, 2);
             $table->decimal('paid_amount', 10, 2);
             $table->string('status')->default('paid'); // paid, partial, unpaid
+            $table->softDeletes();
             $table->timestamps();
         });
     }
