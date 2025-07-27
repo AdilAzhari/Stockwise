@@ -4,24 +4,17 @@ namespace App\DTOs;
 
 use App\Models\StockEntry;
 
-readonly class StockEntryDTO
+final readonly class StockEntryDTO
 {
     public function __construct(
-        public int $id,
-        public int $productId,
-        public int $quantity,
-        public float $costPrice,
-        public string $addedByName
-    ) {}
-
-    public static function fromModel(StockEntry $entry): self
+        public readonly int     $added_by,
+        public readonly float   $cost_price,
+        public readonly string  $reference_number,
+        public readonly int     $productId,
+        public readonly int     $quantity,
+        public readonly int     $supplierId,
+        public readonly ?string $note = null,
+    )
     {
-        return new self(
-            $entry->id,
-            $entry->product_id,
-            $entry->quantity,
-            $entry->cost_price,
-            $entry->addedBy?->name ?? 'System'
-        );
     }
 }
