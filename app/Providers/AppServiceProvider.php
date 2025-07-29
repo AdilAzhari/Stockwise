@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\SaleProduct;
-use App\Observers\SaleProductObserver;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
